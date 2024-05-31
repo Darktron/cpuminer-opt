@@ -2075,11 +2075,7 @@ static bool stratum_notify(struct stratum_ctx *sctx, json_t *params)
          const char *s = json_string_value( json_array_get( merkle_arr, i ) );
          if ( !s || strlen(s) != 64 )
          {
-            for ( int j = sctx->job.merkle_buf_size; j > 0; j-- )
-               free( sctx->job.merkle[i] );
-            free( sctx->job.merkle );
-            sctx->job.merkle_count =
-            sctx->job.merkle_buf_size = 0;
+            sctx->job.merkle_count = 0;
             pthread_mutex_unlock( &sctx->work_lock );
             applog( LOG_ERR, "Stratum notify: invalid Merkle branch" );
             goto out;
@@ -2243,7 +2239,7 @@ static bool stratum_benchdata(json_t *result, json_t *params, int thr_id)
 #endif
 
 	cpu_bestfeature(arch, 16);
-	if (has_aes_ni()) strcat(arch, " NI");
+	if (has_aes()) strcat(arch, " NI");
 
 	cpu_getmodelid(vendorid, 32);
 	cpu_getname(cpuname, 80);

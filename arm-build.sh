@@ -9,6 +9,6 @@ rm -f config.status
 
 CFLAGS="-Ofast -march=armv8-a+crypto+crc+aes+sha2 -Wall -flax-vector-conversions" ./configure  --with-curl 
 
-make -j $nproc
+make -j $(nproc)
 
 strip -s cpuminer
